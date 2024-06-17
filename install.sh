@@ -35,7 +35,7 @@ fi
 
 echo checking if you are booted in uefi mode
 ls /sys/firmware/efi/efivars/
-echo Are booted in uefi? (long text with uuids)
+echo Are booted in uefi? \(long text with uuids\)
 read answer
 
 if [[ $answer = y ]] ; then
