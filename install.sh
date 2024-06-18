@@ -55,12 +55,12 @@ echo "Enter drive: "
 read drive
 
 cfdisk /dev/$drive
-lsblk
 echo "Enter linux filesystem Partition: "
+lsblk
 read partition
 mkfs.ext4 /dev/$partition
 
-read -p "Did you also create efi partition? [y/n]" answer
+read -p "Did you also create efi partition? [y/n] " answer
 if [[ $answer = y ]] ; then
   lsblk
   echo "Enter EFI partition: "
@@ -116,8 +116,8 @@ grub-mkconfig -o /boot/grub/grub.cfg
 pacman -S --noconfirm git vim zsh gedit networkmanager
 systemctl enable NetworkManager
 
-echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
-echo "%Defaults timestamp_timeout=0" >> /etc/sudoers
+echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+#echo "%Defaults timestamp_timeout=0" >> /etc/sudoers
 echo "Enter Username: "
 read username
 useradd -m -G wheel -s /bin/zsh $username
@@ -140,12 +140,12 @@ cd paru
 makepkg -si
 cd
 mkdir Downloads Documents Pictures Music Projects
-sudo pacman -Syu --noconfirm noto-fonts noto-fonts-emoji ffmpeg fzf ohmyzsh xdotool playerctl dunst pamixer zsh git vim wl-clipboard cliphist brightnessctl pavucontrol waybar bluez-utils blueman neofetch swaylock mpc mpv ntfs-3g thunar swaylock gedit kitty
+sudo pacman -Syu --noconfirm noto-fonts noto-fonts-emoji ffmpeg fzf xdotool playerctl dunst pamixer zsh git vim wl-clipboard cliphist brightnessctl pavucontrol waybar bluez-utils blueman neofetch swaylock mpc mpv ntfs-3g thunar swaylock gedit kitty
 systemctl enable bluetooth
 echo "Installing applications"
 sudo pacman -Syu --noconfirm discord spotify-launcher telegram-desktop
 sudo usermod -a -G input $USER
-paru -Syu hyprland fusuma hyprshade jq wofi wlogout swww dolphin brave-bin wine
+paru -Syu hyprland fusuma hyprshade jq wofi wlogout swww dolphin brave-bin wine ohmyzsh
 
 
 #vencord install
