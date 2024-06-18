@@ -54,21 +54,21 @@ lsblk
 echo "Enter drive: "
 read drive
 
-cfdisk $drive
+cfdisk /dev/$drive
 lsblk
 echo "Enter linux filesystem Partition: "
 read partition
-mkfs.ext4 $partition
+mkfs.ext4 /dev/$partition
 
 read -p "Did you also create efi partition? [y/n]" answer
 if [[ $answer = y ]] ; then
   lsblk
   echo "Enter EFI partition: "
   read efipartition
-  mkfs.vfat -F 32 $efipartition
+  mkfs.vfat -F 32 /dev/$efipartition
 fi
 
-mount $partition /mnt
+mount /dev/$partition /mnt
 pacstrap /mnt base base-devel linux linux-firmware grub
 genfstab -U /mnt >> /mnt/etc/fstab
 
@@ -107,7 +107,7 @@ lsblk
 echo "Enter EFI partition: "
 read efipartition
 mkdir /boot/efi
-mount $efipartition /boot/efi 
+mount /dev/$efipartition /boot/efi 
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 sed -i 's/quiet/pci=noaer/g' /etc/default/grub
 sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/g' /etc/default/grub
