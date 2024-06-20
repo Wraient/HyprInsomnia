@@ -116,7 +116,8 @@ grub-mkconfig -o /boot/grub/grub.cfg
 pacman -S --noconfirm git vim zsh gedit networkmanager
 systemctl enable NetworkManager
 
-echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
+#echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 #echo "%Defaults timestamp_timeout=0" >> /etc/sudoers
 echo "Enter Username: "
 read username
