@@ -113,7 +113,7 @@ sed -i 's/quiet/pci=noaer/g' /etc/default/grub
 sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/g' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
-pacman -S --noconfirm git vim zsh gedit networkmanager
+pacman -S --noconfirm git vim zsh gedit networkmanager cargo
 systemctl enable NetworkManager
 
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
@@ -135,9 +135,14 @@ su -c $ai3_path -s /bin/sh $username
 printf '\033c'
 
 echo "Welcome to Custom Installation Script!"
-cd $HOME
-git clone https://aur.archlinux.org/paru.git
-cd paru
+
+echo "Enter your username"
+read username
+su $username
+cd
+#sudo -u $username git clone https://aur.archlinux.org/yay.git
+git clone https://aur.archlinux.org/yay.git
+cd yay
 makepkg -si
 cd
 mkdir Downloads Documents Pictures Music Projects
@@ -146,9 +151,12 @@ systemctl enable bluetooth
 echo "Installing applications"
 sudo pacman -Syu --noconfirm discord spotify-launcher telegram-desktop
 sudo usermod -a -G input $USER
-paru -Syu hyprland ruby-fusuma hyprshade jq wofi wlogout swww dolphin brave-bin wine
+yay -Syu hyprland ruby-fusuma hyprshade jq wofi wlogout swww dolphin brave-bin wine
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
+cd Projects
+git clone https://github.com/wraient/HyprInsomnia
+chmod +x *
+./config_installer
 
 #vencord install
 
