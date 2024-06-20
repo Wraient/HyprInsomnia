@@ -6,7 +6,7 @@ REPO_PATH="/path/to/your/github/repo"
 # Change to the repo directory
 cd "$REPO_PATH" || exit 1
 
-# Iterate through each directory in the repo
+# Process each directory
 for dir in */ ; do
     # Check if .original_path file exists
     if [ -f "${dir}.original_path" ]; then
@@ -30,5 +30,33 @@ for dir in */ ; do
         echo "No .original_path file found in $dir. Skipping."
     fi
 done
+
+# Process loose files
+if [ -f ".original_path" ]; then
+    # Read each line in the .original_path file
+    while IFS= read -r line; do
+        # Extract the file name and the original path
+        FILENAME=$(basename "$line")
+        ORIGINAL_PATH="${line/\$USER/$USER}"
+
+        # Check if the file exists in the repository
+        if [ -f "$FILENAME" ]; then
+            # Create parent directories if they don't exist
+            mkdir -p "$(dirname "$ORIGINAL_PATH")"
+
+            # Copy the file to the original path
+            cp "$FILENAME" "$ORIGINAL_PATH"
+
+            echo "Copied $FILENAME to $ORIGINAL_PATH."
+        else
+            echo "File $FILENAME not found in the repository. Skipping."
+        fi
+    done < ".original_path"
+
+    # Optionally remove the central .original_path file if no longer needed
+    # rm ".original_path"
+else
+    echo "No central .original_path file found. Skipping loose files."
+fi
 
 echo "Done!"
