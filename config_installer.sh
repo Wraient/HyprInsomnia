@@ -1,28 +1,34 @@
-tmp_dir=$(mktemp -d /tmp/config_installer.XXXXXXXXXX)
-cd tmp_dir
-git clone https://github.com/wraient/dotfiles.git
+#!/bin/bash
 
-cd dotfiles
+# Define the base path of your GitHub repo (adjust this to your actual repo path)
+REPO_PATH="/path/to/your/github/repo"
 
-for file in *; do
-  # Check if it's a directory (not a file or hidden directory)
-  if [[ -d "$file" ]] && [[ ! "$file" =~ ^\..* ]]; then
-    echo "Processing directory: $file"
+# Change to the repo directory
+cd "$REPO_PATH" || exit 1
 
-    original_path=$(cat ./$file/.original_path)
-    mkdir -p $original_path
-    cp -r ./$file/* $original_path/
+# Iterate through each directory in the repo
+for dir in */ ; do
+    # Check if .original_path file exists
+    if [ -f "${dir}.original_path" ]; then
+        # Read the original path from the .original_path file
+        ORIGINAL_PATH=$(<"${dir}.original_path")
 
-    echo Copied file from ./$file ---> $original_path
+        # Replace $USER with the actual username
+        ORIGINAL_PATH="${ORIGINAL_PATH/\$USER/$USER}"
 
-    # Change to the directory for further operations
-    pushd "$file" > /dev/null
-    # Your commands on the files in the directory go here
-    popd > /dev/null
-  fi
-  if [ -f "$file" ]; then
-    continue
-  fi
+        # Create parent directories if they don't exist
+        mkdir -p "$(dirname "$ORIGINAL_PATH")"
+
+        # Copy the directory to the original path
+        cp -r "$dir" "$(dirname "$ORIGINAL_PATH")"
+
+        # Remove the .original_path file
+        rm "${dir}.original_path"
+
+        echo "Copied $dir to $ORIGINAL_PATH and removed .original_path file."
+    else
+        echo "No .original_path file found in $dir. Skipping."
+    fi
 done
 
-
+echo "Done!"
