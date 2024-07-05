@@ -151,6 +151,7 @@ systemctl enable bluetooth
 echo "Installing applications"
 sudo pacman -Syu --noconfirm discord spotify-launcher telegram-desktop
 sudo usermod -a -G input $USER
+sudo usermod -aG audio $USER
 yay -Syu hyprland ruby-fusuma hyprshade jq wofi wlogout swww dolphin brave-bin wine
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 cd Projects
