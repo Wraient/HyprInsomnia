@@ -126,7 +126,7 @@ passwd $username
 
 echo "Pre-Installation You can Reboot the system now"
 ai3_path=/home/$username/arch_install3.sh
-sed '1,/^#part3$/d' arch_install2.sh > $ai3_path
+sed '1,/^#part3$/d' `basename $0` > $ai3_path
 chown $username:$username $ai3_path
 chmod +x $ai3_path
 su -c $ai3_path -s /bin/sh $username
