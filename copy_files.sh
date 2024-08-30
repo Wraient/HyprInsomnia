@@ -19,7 +19,9 @@ function create_path_info_file() {
   destination_path="$1"  # Capture destination path from function argument
   source_path="$2"       # Capture source path from function argument
   # Create the file with the source path
-  echo "$source_path" > "$destination_path/$original_file_filename"
+
+  modified_path=$(echo "$source_path" | sed "s#/home/$USER#/home/\$USER#g")
+  echo "$modified_path" > "$destination_path/$original_file_filename"
 }
 
 
@@ -49,7 +51,9 @@ while IFS= read -r source_path; do
 
   # Check if it is folder
   if [ -f "$source_path" ]; then
-  	echo $source_path >> $destination_folder/$original_file_filename
+
+  modified_path=$(echo "$source_path" | sed "s#/home/$USER#/home/\$USER#g")
+  	echo $modified_path >> $destination_folder/$original_file_filename
 	cp -p -r "$source_path" "$destination_folder"
   fi
 
