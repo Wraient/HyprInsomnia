@@ -113,7 +113,7 @@ sed -i 's/quiet/pci=noaer/g' /etc/default/grub
 sed -i 's/GRUB_TIMEOUT=5/GRUB_TIMEOUT=0/g' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
-pacman -S --noconfirm git vim zsh gedit networkmanager cargo
+pacman -S --noconfirm git vim gedit networkmanager cargo
 systemctl enable NetworkManager
 
 echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
@@ -121,7 +121,7 @@ echo "%wheel ALL=(ALL) ALL" >> /etc/sudoers
 #echo "%Defaults timestamp_timeout=0" >> /etc/sudoers
 echo "Enter Username: "
 read username
-useradd -m -G wheel -s /bin/zsh $username
+# useradd -m -G wheel -s /bin/zsh $username
 passwd $username 
 
 echo "Pre-Installation You can Reboot the system now"
