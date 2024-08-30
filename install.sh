@@ -160,4 +160,3 @@ chmod +x *
 ./config_installer
 
 #vencord install
-
