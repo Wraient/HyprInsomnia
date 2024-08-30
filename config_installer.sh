@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the base path of your GitHub repo (adjust this to your actual repo path)
-git clone https://github.com/wraient/dotfiles
+git clone https://github.com/wraient/dotfiles --depth 1
 REPO_PATH="$(pwd)"
 
 # Change to the repo directory
